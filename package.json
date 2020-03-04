@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/jsc31994/comp584-interactive-svg/issues"
   },
-  "homepage": "https://github.com/jsc31994/comp584-interactive-svg#readme"
+  "homepage": "https://github.com/jsc31994/comp584-interactive-svg#readme",
+  "dependencies": {
+    "d3": "^4.0.0"
+  }
 }
