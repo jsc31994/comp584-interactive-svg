@@ -1,5 +1,5 @@
 body {
-   font: 10px sans-serif;
+   font: 14px sans-serif;
 }
 
 .axis path,
@@ -23,6 +23,10 @@ body {
    border: 2px solid green;
 }
 
+rect {
+   width: 630;
+   height: 275;
+}
 .overlay {
    fill: none;
    pointer-events: all;

@@ -1,0 +1,19 @@
+{
+  "name": "hw3",
+  "version": "1.0.0",
+  "description": "bla",
+  "main": "index.html",
+  "scripts": {
+    "test": "npm test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jsc31994/comp584-interactive-svg.git"
+  },
+  "author": "jose cabrera",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jsc31994/comp584-interactive-svg/issues"
+  },
+  "homepage": "https://github.com/jsc31994/comp584-interactive-svg#readme"
+}

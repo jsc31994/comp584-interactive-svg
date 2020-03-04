@@ -17,13 +17,13 @@ var parseDate = d3.timeParse("%b %Y"),
    };
 
 var x = d3.scaleTime().range([0, width]);
-var x2 = d3.scaleTime().range([0, width]);
+// var x2 = d3.scaleTime().range([0, width]);
 
 var y = d3.scaleTime().range([height, 0]);
-var y2 = d3.scaleTime().range([height, 0]);
+// var y2 = d3.scaleTime().range([height, 0]);
 
 var xAxis = d3.axisBottom(x); //.scale(x);
-var xAxis2 = d3.axisBottom(x2);
+// var xAxis2 = d3.axisBottom(x2);
 
 var yAxis = d3.axisLeft(y); //.scale(y);
 
