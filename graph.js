@@ -48,8 +48,14 @@ var svg = d3
 
 //calling the data
 d3.csv("./unemployment_2005_2015.csv", function(error, data) {
-   if (error) throw error;
+   if (error) {
+      window.alert("This code must be ran within XAMMP or it will not work");
+      document.getElementById("error-page").innerHTML =
+         "<h1>Files must be ran within XAMMP or graph will not be displayed</h1>";
+      throw error;
+   }
    console.log(data);
+   document.getElementById().innerHTML = "<h1>Rate of Unemployment<h1>";
 
    //for each data entry, we
    //will plot it on the graph
