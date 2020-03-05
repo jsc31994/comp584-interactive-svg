@@ -17,15 +17,63 @@ var parseDate = d3.timeParse("%b %Y"),
    };
 
 var x = d3.scaleTime().range([0, width]);
-// var x2 = d3.scaleTime().range([0, width]);
+var x2 = d3.scaleTime().range([0, width]);
 
 var y = d3.scaleTime().range([height, 0]);
-// var y2 = d3.scaleTime().range([height, 0]);
+var y2 = d3.scaleTime().range([height2, 0]);
 
 var xAxis = d3.axisBottom(x); //.scale(x);
-// var xAxis2 = d3.axisBottom(x2);
+var xAxis2 = d3.axisBottom(x2);
 
 var yAxis = d3.axisLeft(y); //.scale(y);
+
+function brushed() {
+   if (d3.event.sourceEvent && d3.event.sourceEvent.type === "zoom") return; // ignore brush-by-zoom
+   var s = d3.event.selection || x2.range();
+   x.domain(s.map(x2.invert, x2));
+   focus.select(".area").attr("d", area);
+   focus.select(".axis--x").call(xAxis);
+   svg.select(".zoom").call(
+      zoom.transform,
+      d3.zoomIdentity.scale(width / (s[1] - s[0])).translate(-s[0], 0)
+   );
+}
+
+function zoomed() {
+   if (d3.event.sourceEvent && d3.event.sourceEvent.type === "brush") return; // ignore zoom-by-brush
+   var t = d3.event.transform;
+   x.domain(t.rescaleX(x2).domain());
+   focus.select(".area").attr("d", area);
+   focus.select(".axis--x").call(xAxis);
+   context.select(".brush").call(brush.move, x.range().map(t.invertX, t));
+}
+
+function type(d) {
+   d.date = parseDate(d.date);
+   d.price = +d.price;
+   return d;
+}
+
+var brush = d3
+   .brushX()
+   .extent([
+      [0, 0],
+      [width, height2]
+   ])
+   .on("brush end", brushed);
+
+var zoom = d3
+   .zoom()
+   .scaleExtent([1, Infinity])
+   .translateExtent([
+      [0, 0],
+      [width, height]
+   ])
+   .extent([
+      [0, 0],
+      [width, height]
+   ])
+   .on("zoom", zoomed);
 
 var line = d3
    .line()
@@ -34,6 +82,15 @@ var line = d3
    })
    .y(function(d) {
       return y(d.rate);
+   });
+
+var line2 = d3
+   .line()
+   .x(function(d) {
+      return x2(d.date);
+   })
+   .y(function(d) {
+      return y2(d.rate);
    });
 
 //this adds an svg tag to the body as well
@@ -46,6 +103,18 @@ var svg = d3
    .append("g")
    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
+svg.append("defs")
+   .append("clipPath")
+   .attr("id", "clip")
+   .append("rect")
+   .attr("width", width)
+   .attr("height", height);
+
+var context = svg
+   .append("g")
+   .attr("class", "context")
+   .attr("transform", "translate(" + margin2.left + "," + margin2.top + ")");
+
 //calling the data
 d3.csv("./unemployment_2005_2015.csv", function(error, data) {
    if (error) {
@@ -55,8 +124,8 @@ d3.csv("./unemployment_2005_2015.csv", function(error, data) {
       throw error;
    }
    console.log(data);
-   document.getElementById().innerHTML = "<h1>Rate of Unemployment<h1>";
-
+   document.getElementById("success-page").innerHTML =
+      "<h1>Unemployment Rates</h1>";
    //for each data entry, we
    //will plot it on the graph
    data.forEach(function(d) {
